@@ -7,59 +7,63 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/home');
+
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      navigate('/home');
+    } else {
+      alert(data.error);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: '#FFDAB3' }}>
-      <div className="w-full max-w-md p-8" style={{ backgroundColor: '#C8AAAA', borderRadius: '8px', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)' }}>
-        <h1 className="text-2xl font-bold text-center mb-6" style={{ color: '#574964' }}>Login</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#574964' }}>Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className="w-full px-4 py-2 rounded-md"
-              style={{ backgroundColor: '#9F8383', color: '#574964', border: 'none', outline: 'none' }}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: '#574964' }}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-2 rounded-md"
-              style={{ backgroundColor: '#9F8383', color: '#574964', border: 'none', outline: 'none' }}
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 rounded-md font-semibold"
-            style={{ backgroundColor: '#574964', color: '#FFDAB3' }}
-          >
-            Login
-          </button>
-        </form>
-        <div className="mt-4 text-center">
-          <p className="text-sm" style={{ color: '#574964' }}>
-            Dont have an account?{' '}
-            <button
-              onClick={() => navigate('/register')}
-              className="font-semibold"
-              style={{ color: '#574964', textDecoration: 'underline' }}
-            >
-              Register
-            </button>
-          </p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFDAB3]">
+      <h1 className="text-3xl font-bold text-[#574964] mb-6">Login</h1>
+      <form onSubmit={handleSubmit} className="w-1/3 bg-[#C8AAAA] p-6 rounded-lg shadow-md">
+        <div className="mb-4">
+          <label className="block text-[#574964] text-sm font-bold mb-2">Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-[#574964]"
+          />
         </div>
-      </div>
+        <div className="mb-6">
+          <label className="block text-[#574964] text-sm font-bold mb-2">Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-[#574964]"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-[#574964] text-white py-2 px-4 rounded-lg hover:bg-[#9F8383] w-full"
+        >
+          Login
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/register')}
+          className="mt-4 text-[#574964] underline w-full text-center"
+        >
+          Register
+        </button>
+      </form>
     </div>
   );
 }

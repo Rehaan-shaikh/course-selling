@@ -70,7 +70,7 @@ function Navbar() {
           <li>
             <button
               onClick={handleLogout}
-              className="px-3 py-2 rounded-md font-semibold"
+              className="px-3 py-2 rounded-full font-semibold "
               style={{ backgroundColor: '#574964', color: '#FFDAB3' }}
             >
               Logout
