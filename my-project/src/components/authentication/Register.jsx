@@ -11,12 +11,12 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:5173/register', {
+    const response = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
-      
     });
+    
     // console.log(response);
     const data = await response.json();
 
