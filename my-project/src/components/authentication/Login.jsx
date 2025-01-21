@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,12 +18,12 @@ function Login() {
       body: JSON.stringify({ username, password }),
     });
 
-    const data = await response.json();
-
     if (response.ok) {
-      localStorage.setItem('token', data.token);
+      login(); // Set isAuthenticated to true
       navigate('/home');
+      alert('Login successful!');
     } else {
+      const data = await response.json();
       alert(data.error);
     }
   };

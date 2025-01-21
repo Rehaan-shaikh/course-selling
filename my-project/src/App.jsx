@@ -1,29 +1,35 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './components/authentication/Login';
 import Register from './components/authentication/Register';
-
-import Navbar from './components/common/Navbar'; // Import Navbar
-import Home from './components/Home'; // Placeholder for the Home page
-import Courses from './components/Courses/courses'; // Placeholder for the Courses page
-import Feedback from './components/Feedback'; // Placeholder for Feedback
-import Team from './components/Team'; // Placeholder for Meet Team
-import MyCourses from './components/MyCourses'; // Placeholder for My Courses
+import Navbar from './components/common/Navbar';
+import Home from './components/Home';
+import Courses from './components/Courses/courses';
+import Feedback from './components/Feedback';
+import Team from './components/Team';
+import MyCourses from './components/MyCourses';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  return (
+    <AuthProvider>
+      <AuthenticatedApp />
+    </AuthProvider>
+  );
+}
 
-  const handleLogin = () => setIsAuthenticated(true);
-  const handleRegister = () => setIsAuthenticated(true);
+function AuthenticatedApp() {
+  const { isAuthenticated } = useAuth();
 
   return (
     <Router>
+      {/* Conditionally render the Navbar */}
       {isAuthenticated && <Navbar />}
       <Routes>
         {/* Public routes */}
-        <Route path="/" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register onRegister={handleRegister} />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Protected routes */}
         {isAuthenticated && (
@@ -32,7 +38,7 @@ function App() {
             <Route path="/courses" element={<Courses />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/team" element={<Team />} />
-            <Route path="/mycourses" element={<MyCourses />}/>
+            <Route path="/mycourses" element={<MyCourses />} />
           </>
         )}
       </Routes>

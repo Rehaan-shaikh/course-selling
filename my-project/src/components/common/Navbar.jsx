@@ -6,10 +6,11 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Perform any logout actions here (e.g., clearing auth tokens)
+    localStorage.removeItem('token');
     navigate('/');
+    window.location.reload(); // Refresh to trigger the `useEffect` in App.jsx
   };
-
+  
   return (
     <nav className="bg-[#C8AAAA] shadow-md">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">

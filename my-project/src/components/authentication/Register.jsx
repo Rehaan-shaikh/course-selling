@@ -14,13 +14,13 @@ function Register() {
     const response = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ username, email, password }),  //whatever we pass herre in body only that can be accessd by backend
     });
     
-    // console.log(response);
+    console.log(response);  //respounce only stores status
     const data = await response.json();
 
-    if (response.ok) {
+    if (response.ok) {  //ok is  boolean value
       alert('Registration successful!');
       navigate('/');
     } else {
@@ -31,7 +31,7 @@ function Register() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFDAB3]">
       <h1 className="text-3xl font-bold text-[#574964] mb-6">Register</h1>
-      <form method="POST" action='http://localhost:5173/register' onSubmit={handleRegister} className="w-1/3 bg-[#C8AAAA] p-6 rounded-lg shadow-md">
+      <form onSubmit={handleRegister} className="w-1/3 bg-[#C8AAAA] p-6 rounded-lg shadow-md">
         <div className="mb-4">
           <label className="block text-[#574964] text-sm font-bold mb-2">Username:</label>
           <input

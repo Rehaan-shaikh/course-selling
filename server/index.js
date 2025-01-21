@@ -2,7 +2,6 @@ import express from "express";
 import pg from "pg";
 import bodyParser from "body-parser";
 import cors from "cors";
-import jwt from "jsonwebtoken";
 
 const app = express();
 const port = 3000;
@@ -14,14 +13,15 @@ const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "courseSelling",
-  password: "123456",
+  password: "nkocet@123",
   port: 5432,
 });
 db.connect();
 
+// Handles POST requests to the /register endpoint.
 app.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
-  console.log("Received request:", req.body);
+
   try {
     await db.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
@@ -33,9 +33,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
-
-
+// Handles POST requests to the /login endpoint.
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -49,29 +47,24 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user.id }, "your_jwt_secret", { expiresIn: "1h" });
-
-    res.json({ message: "Login successful", token });
+    // Return the user details (excluding sensitive information) for the front end
+    res.status(200).json({
+      message: "Login successful",
+      user: { id: user.id, username: user.username, email: user.email },
+    });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
   }
 });
 
-const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Unauthorized" });
-
+// A protected route for fetching user-specific data without tokens
+app.get("/home", async (req, res) => {
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
-    req.user = decoded;
-    next();
+    const users = await db.query("SELECT id, username, email FROM users");
+    res.json(users.rows);
   } catch (err) {
-    res.status(403).json({ error: "Invalid token" });
+    res.status(500).json({ error: "Failed to fetch data" });
   }
-};
-
-app.get("/home", authenticate, (req, res) => {
-  res.json({ message: `Welcome user ${req.user.id}` });
 });
 
 app.listen(port, () => {
