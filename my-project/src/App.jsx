@@ -10,6 +10,9 @@ import Courses from './components/Courses/courses';
 import Feedback from './components/Feedback';
 import Team from './components/Team';
 import MyCourses from './components/MyCourses';
+import Footer from './components/common/Footer';
+import Course from './components/Courses/course';
+
 
 function App() {
   return (
@@ -39,9 +42,11 @@ function AuthenticatedApp() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/team" element={<Team />} />
             <Route path="/mycourses" element={<MyCourses />} />
+            <Route path="//course-details/:id" element={<Course />} />
           </>
         )}
       </Routes>
+      {isAuthenticated && <Footer />}
     </Router>
   );
 }
