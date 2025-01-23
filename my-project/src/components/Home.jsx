@@ -14,7 +14,7 @@ const MainPage = () => {
               Welcome to,
               <span className="bg-gradient-to-r from-[#FFDAB3] via-[#C8AAAA] to-[#9F8383] bg-clip-text text-transparent">
                 {" "}
-                FewvLearns{" "}
+                CourseHub{" "}
               </span>
               !
             </h1>

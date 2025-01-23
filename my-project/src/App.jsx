@@ -42,7 +42,8 @@ function AuthenticatedApp() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/team" element={<Team />} />
             <Route path="/mycourses" element={<MyCourses />} />
-            <Route path="//course-details/:id" element={<Course />} />
+            <Route path="/course-details/:id" element={<Course />} />
+            <Route path="/feedback" element={<Feedback />} />
           </>
         )}
       </Routes>

@@ -6,6 +6,7 @@ import cors from "cors";
 const app = express();
 const port = 3000;
 
+
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -57,15 +58,34 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// A protected route for fetching user-specific data without tokens
-app.get("/home", async (req, res) => {
+// Handle POST request for submitting feedback
+app.post("/api/feedback", async (req, res) => {
+  const { username, courseName, pros, cons } = req.body;
+
   try {
-    const users = await db.query("SELECT id, username, email FROM users");
-    res.json(users.rows);
+    const result = await db.query(
+      "INSERT INTO feedback (username, course_name, pros, cons) VALUES ($1, $2, $3, $4) RETURNING *",
+      [username, courseName, pros, cons]
+    );
+
+    res.status(201).json(result.rows[0]); // Send the newly created feedback object
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch data" });
+    console.error("Error submitting feedback:", err);
+    res.status(500).json({ error: "Failed to submit feedback" });
   }
 });
+
+// Handle GET request for fetching all feedback
+app.get("/api/feedback", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM feedback");
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching feedback:", err);
+    res.status(500).json({ error: "Failed to fetch feedback" });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

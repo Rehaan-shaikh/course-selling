@@ -9,11 +9,17 @@ import course5 from "../../assets/courses-images/5.png";
 
 const courses = [
   { id: 1, name: "Learn About Kafka and Node.js", price: 30, imageUrl: course1 },
-  { id: 2, name: "React, but with webpack", price: 20, imageUrl: course2 },
+  { id: 2, name: "React, but with webpackages and more ", price: 20, imageUrl: course2 },
   { id: 3, name: "Learn About Terraform in Depth", price: 20, imageUrl: course3 },
   { id: 4, name: "Kubernetes and Docker for deployment", price: 30, imageUrl: course4 },
   { id: 5, name: "Create your own Serverless web app", imageUrl: course5 },
 ];
+
+// Initially, selectedItems = [] (empty).
+// If the user selects the course with id = 2 and 3
+// The state becomes: selectedItems = [{ id: 2, quantity: 1 }, { id: 3, quantity: 1 }].
+// If the user deselects the course with id = 2:
+// The state becomes: selectedItems = [{ id: 3, quantity: 1 }].
 
 function Courses() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -24,6 +30,7 @@ function Courses() {
     setSelectedItems((prev) =>
       checked ? [...prev, { id, quantity: 1 }] : prev.filter((item) => item.id !== id)
     );
+    console.log("selectedItems",selectedItems);
   };
 
   return (
@@ -34,8 +41,7 @@ function Courses() {
         {courses.map((course) => (
           <div
             key={course.id}
-            className="max-w-sm rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 bg-[#9F8383]"
-          >
+            className="max-w-sm rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 bg-[#9F8383]">
             <img className="w-full h-48 object-cover" src={course.imageUrl} alt={course.name} />
             <div className="p-6">
               <div className="font-bold text-2xl mb-3 text-[#FFDAB3]">{course.name}</div>
@@ -49,6 +55,7 @@ function Courses() {
                 <div className="text-lg font-semibold text-[#FFDAB3]">${course.price}</div>
               </div>
             </div>
+                          
             <div className="p-4 bg-[#FFDAB3] text-[#574964] text-center rounded-b-lg">
               <label className="flex items-center justify-center cursor-pointer">
                 <input

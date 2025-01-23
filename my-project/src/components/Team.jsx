@@ -78,7 +78,7 @@ export default function Team() {
       <div className="mt-20">
         <div className="mx-auto text-center max-w-5xl px-6">
           <p className="text-lg text-[#FFDAB3]">
-            <span className="font-extrabold text-[#8a5d5d]">Our Mission; </span> 
+            <span className="font-extrabold text-[#8a5d5d]">Our Mission: </span> 
             To cultivate a community where learning meets innovation, driven by
             the passion of exceptional individuals.
           </p>

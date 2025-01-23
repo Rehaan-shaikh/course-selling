@@ -11,7 +11,7 @@ export default function Footer() {
         {/* Footer Content */}
         <div className="text-center space-y-4">
           <h2 className="text-2xl font-extrabold text-[#FFDAB3] hover:text-[#C8AAAA] transition-colors duration-300">
-            FewvLearns
+            CourseHub
           </h2>
           <p className="text-sm md:text-base text-[#C8AAAA] hover:text-[#FFDAB3] transition-colors duration-300">
             Empowering learners with top-notch resources and guidance to achieve their goals.

@@ -14,7 +14,7 @@ const courseDetailsData = {
     course_name: "Create React App with Webpack",
     syllabus: "Enhance your app, advanced state management",
     instructor_bio: "Jane Smith is a leading React developer...",
-    prerequisites: "No prerequisites. Let’s just dive in…",
+    prerequisites: "No prerequisites. Lets just dive in…",
     price: 20
   },
   3: {
@@ -41,7 +41,11 @@ const courseDetailsData = {
 };
 
 const Course = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
+  // console.log(params)
+  // console.log(id)
+
   const courseDetails = courseDetailsData[id];
 
   if (!courseDetails) {
