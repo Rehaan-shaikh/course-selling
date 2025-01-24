@@ -60,12 +60,12 @@ app.post("/login", async (req, res) => {
 
 // Handle POST request for submitting feedback
 app.post("/api/feedback", async (req, res) => {
-  const { username, courseName, pros, cons } = req.body;
+  const { user, courseName, pros, cons } = req.body;
 
   try {
     const result = await db.query(
       "INSERT INTO feedback (username, course_name, pros, cons) VALUES ($1, $2, $3, $4) RETURNING *",
-      [username, courseName, pros, cons]
+      [user, courseName, pros, cons]
     );
 
     res.status(201).json(result.rows[0]); // Send the newly created feedback object

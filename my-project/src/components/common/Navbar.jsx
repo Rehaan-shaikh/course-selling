@@ -6,13 +6,16 @@ import { useAuth } from "../../context/AuthContext";
 function Navbar() {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  
 
   const handleLogout = () => {
     logout();
+    localStorage.removeItem("User")
     navigate("/");
     window.location.reload(); // Refresh to trigger the `useEffect` in App.jsx
   };
 
+ 
   return (
     <nav className="fixed top-0 left-0  h-18 bg-gradient-to-r from-[#574964] via-[#9F8383] to-[#C8AAAA] shadow-lg w-full z-10">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">

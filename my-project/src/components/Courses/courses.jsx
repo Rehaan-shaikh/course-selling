@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import course1 from "../../assets/courses-images/1.png";
 import course2 from "../../assets/courses-images/2.png";
 import course3 from "../../assets/courses-images/3.png";
@@ -12,17 +12,12 @@ const courses = [
   { id: 2, name: "React, but with webpackages and more ", price: 20, imageUrl: course2 },
   { id: 3, name: "Learn About Terraform in Depth", price: 20, imageUrl: course3 },
   { id: 4, name: "Kubernetes and Docker for deployment", price: 30, imageUrl: course4 },
-  { id: 5, name: "Create your own Serverless web app", imageUrl: course5 },
+  { id: 5, name: "Create your own Serverless web app", price: 40, imageUrl: course5 },
 ];
-
-// Initially, selectedItems = [] (empty).
-// If the user selects the course with id = 2 and 3
-// The state becomes: selectedItems = [{ id: 2, quantity: 1 }, { id: 3, quantity: 1 }].
-// If the user deselects the course with id = 2:
-// The state becomes: selectedItems = [{ id: 3, quantity: 1 }].
 
 function Courses() {
   const [selectedItems, setSelectedItems] = useState([]);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { value, checked } = event.target;
@@ -30,7 +25,26 @@ function Courses() {
     setSelectedItems((prev) =>
       checked ? [...prev, { id, quantity: 1 }] : prev.filter((item) => item.id !== id)
     );
-    console.log("selectedItems",selectedItems);
+  };
+//   Example Behavior:
+// Initially, selectedItems = [] (empty).
+// If the user selects another course with id = 3 and 2:
+// The state becomes: selectedItems = [{ id: 2, quantity: 1 }, { id: 3, quantity: 1 }].
+// If the user deselects the course with id = 2:
+// The state becomes: selectedItems = [{ id: 3, quantity: 1 }].
+
+  const handleProceedToPayment = () => {
+    if (selectedItems.length === 0) {
+      alert("Please select at least one course!");
+      return;
+    }
+
+    const selectedCourses = courses.filter((course) =>
+      selectedItems.some((item) => item.id === course.id)
+    );
+    const totalAmount = selectedCourses.reduce((sum, course) => sum + (course.price || 0), 0);
+
+    navigate("/payment", { state: { selectedCourses, totalAmount } });
   };
 
   return (
@@ -41,12 +55,12 @@ function Courses() {
         {courses.map((course) => (
           <div
             key={course.id}
-            className="max-w-sm rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 bg-[#9F8383]">
+            className="max-w-sm rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 bg-[#9F8383]"
+          >
             <img className="w-full h-48 object-cover" src={course.imageUrl} alt={course.name} />
             <div className="p-6">
               <div className="font-bold text-2xl mb-3 text-[#FFDAB3]">{course.name}</div>
               <div className="flex justify-between items-center">
-                {/* Fixed the Link for course-details page */}
                 <Link to={`/course-details/${course.id}`}>
                   <button className="bg-[#FFDAB3] hover:bg-[#C8AAAA] text-[#574964] font-bold py-2 px-6 rounded-full shadow-md transition duration-300">
                     Course Details
@@ -55,7 +69,7 @@ function Courses() {
                 <div className="text-lg font-semibold text-[#FFDAB3]">${course.price}</div>
               </div>
             </div>
-                          
+
             <div className="p-4 bg-[#FFDAB3] text-[#574964] text-center rounded-b-lg">
               <label className="flex items-center justify-center cursor-pointer">
                 <input
@@ -64,6 +78,7 @@ function Courses() {
                   value={course.id}
                   onChange={handleChange}
                   checked={selectedItems.some((item) => item.id === course.id)}
+                  //  Makes sure the checkbox is checked only if the course's id is in the selectedItems list
                 />
                 <span className="ml-2 text-lg font-semibold">Select the course</span>
               </label>
@@ -71,7 +86,10 @@ function Courses() {
           </div>
         ))}
       </div>
-      <button className="bg-[#FFDAB3] hover:bg-[#C8AAAA] text-[#574964] font-bold py-3 px-10 rounded-full shadow-lg transition duration-300 mt-6">
+      <button
+        onClick={handleProceedToPayment}
+        className="bg-[#FFDAB3] hover:bg-[#C8AAAA] text-[#574964] font-bold py-3 px-10 rounded-full shadow-lg transition duration-300 mt-6"
+      >
         Proceed to Payment
       </button>
     </div>

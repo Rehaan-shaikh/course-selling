@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Feedback = () => {
-  const [username, setUsername] = useState("");
   const [courseName, setCourseName] = useState("");
   const [pros, setPros] = useState("");
   const [cons, setCons] = useState("");
   const [feedbacks, setFeedbacks] = useState([]);
+  const user = localStorage.getItem("User");
+
 
   // Fetch feedback from the backend
   useEffect(() => {
@@ -15,6 +16,7 @@ const Feedback = () => {
       try {
         const response = await axios.get("http://localhost:3000/api/feedback");
         setFeedbacks(response.data);
+        // console.log(response.data);
       } catch (err) {
         console.error("Error fetching feedback:", err);
       }
@@ -26,7 +28,8 @@ const Feedback = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const feedbackData = { username, courseName, pros, cons };
+    const feedbackData = { user ,courseName, pros, cons };
+    // console.log(user)
 
     try {
       const response = await axios.post(
@@ -34,7 +37,6 @@ const Feedback = () => {
         feedbackData
       );
       if (response.status === 201) {
-        setUsername("");
         setCourseName("");
         setPros("");
         setCons("");
@@ -64,15 +66,15 @@ const Feedback = () => {
           onSubmit={handleSubmit}
           className="flex flex-col gap-6 mt-6 bg-[#574964] p-8 rounded-lg shadow-md shadow-[#9F8383]"
         >
-          <input 
-          
+          {/* <input 
+          readOnly
             type="text"
             placeholder="Your Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
             className="border bg-[#f6ddc2] border-[#FFDAB3] rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FFDAB3] text-gray-800"
-          />
+          /> */}
           <input
             type="text"
             placeholder="Course Name"

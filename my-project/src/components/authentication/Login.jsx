@@ -9,6 +9,11 @@ function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+
+  if(localStorage.getItem("User")){  // ie user is already logged in
+    navigate("/home")
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -17,6 +22,14 @@ function Login() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
+  
+    const user=await response.json()
+    console.log(user);
+    //email: "rehan1@gmail.com"
+    // id: 1
+    // username : "rehan"
+    
+      localStorage.setItem("User",user?.user?.username)  
 
     if (response.ok) {
       login();
