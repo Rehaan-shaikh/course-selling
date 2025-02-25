@@ -5,6 +5,7 @@ import React, { createContext, useContext, useState } from 'react';
 const AuthContext = createContext();
 
 // Provide context to the app
+// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

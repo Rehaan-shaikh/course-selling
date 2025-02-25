@@ -10,6 +10,9 @@ function Login() {
   const navigate = useNavigate();
 
 
+
+  // localStorage.setItem("userId",user?.id); // Store the user ID
+
   if(localStorage.getItem("User")){  // ie user is already logged in
     navigate("/home")
   }
@@ -24,12 +27,13 @@ function Login() {
     });
   
     const user=await response.json()
-    console.log(user);
+    // console.log(user);
     //email: "rehan1@gmail.com"
     // id: 1
     // username : "rehan"
     
-      localStorage.setItem("User",user?.user?.username)  
+    localStorage.setItem("User",user?.user?.username)  
+    localStorage.setItem("userId",user?.user?.id)  
 
     if (response.ok) {
       login();

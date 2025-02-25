@@ -33,9 +33,8 @@ useEffect(()=>{
   const user=localStorage.getItem("User")
   console.log(user);
   if(user){
-    login()  //ie. set isAuthenticated to true 
+    login()  //ie. set login to true 
     //and this will hlp in persisting data after reload
-    //cause after reload isAuthenticated is set to its default false value
   }
 })
 
@@ -62,10 +61,9 @@ useEffect(()=>{
             <Route path="/payment" element={<Payment />} />
             <Route path="/sucess" element={<Success />} />
             <Route path="/cancel" element={<Cancel />} />
-            <Route path="/mycourses" element={<MyCourses />} />
           </>
         )}
-      <Route path="*" element={<Login />} /> 
+      {/* <Route path="*" element={<Login />} />  */}
       {/* If not any of the above path matches then it will render login page and if user is currently login then login page nevigates to homepage */}
       </Routes>
       {isAuthenticated && <Footer />}

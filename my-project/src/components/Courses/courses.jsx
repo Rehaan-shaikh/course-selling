@@ -20,6 +20,8 @@ function Courses() {
   const navigate = useNavigate();
 
   const handleChange = (event) => {
+    // https://chatgpt.com/share/67b1b02c-ee04-8007-ba3f-08569d95f499
+    //Refer tjis to understand
     const { value, checked } = event.target;
     const id = parseInt(value);
     setSelectedItems((prev) =>
@@ -31,7 +33,7 @@ function Courses() {
 // If the user selects another course with id = 3 and 2:
 // The state becomes: selectedItems = [{ id: 2, quantity: 1 }, { id: 3, quantity: 1 }].
 // If the user deselects the course with id = 2:
-// The state becomes: selectedItems = [{ id: 3, quantity: 1 }].
+// The state becomes: selectedItems = [{ id: 3, quantity: 1 }]
 
   const handleProceedToPayment = () => {
     if (selectedItems.length === 0) {
@@ -40,11 +42,13 @@ function Courses() {
     }
 
     const selectedCourses = courses.filter((course) =>
-      selectedItems.some((item) => item.id === course.id)
+      selectedItems.some((item) => item.id === course.id)  //it return true or false
     );
-    const totalAmount = selectedCourses.reduce((sum, course) => sum + (course.price || 0), 0);
+    const totalAmount = selectedCourses.reduce((sum, coursePrice) => sum + (coursePrice.price || 0) , 0);  //(coursePrice.price || 0) if no price is given it adds 0
+    // const totalAmount = selectedCourses.reduce((sum, coursePrice) => sum + coursePrice.price , 0);
 
     navigate("/payment", { state: { selectedCourses, totalAmount } });
+    // This mechanism is often referred to as "location state" when you're passing data via React Router's navigation.
   };
 
   return (
@@ -83,8 +87,9 @@ function Courses() {
                 <span className="ml-2 text-lg font-semibold">Select the course</span>
               </label>
             </div>
+
           </div>
-        ))}
+        ))} 
       </div>
       <button
         onClick={handleProceedToPayment}

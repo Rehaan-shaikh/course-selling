@@ -42,6 +42,8 @@ const Feedback = () => {
         setCons("");
         alert("Feedback submitted successfully!");
         setFeedbacks([...feedbacks, response.data]);
+        // above line is used to render the most recent feedback 
+        // cause the useEffect for getting data from database will render on only 1st render
       } else {
         alert("Failed to submit feedback.");
       }
@@ -105,6 +107,7 @@ const Feedback = () => {
           </button>
         </form>
       </section>
+
 
       {/* Feedback List */}
       <section className="max-w-6xl mx-auto mt-16">

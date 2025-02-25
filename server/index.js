@@ -87,6 +87,53 @@ app.get("/api/feedback", async (req, res) => {
 });
 
 
+
+// Add this endpoint to your backend
+app.post("/confirm-payment", async (req, res) => {
+  const { userId, courseIds } = req.body;
+  
+  try {
+    // Update the user's course_id array with the new course IDs
+    await db.query(
+      "UPDATE users SET course_id = array_cat(course_id, $1) WHERE id = $2",
+      [courseIds, userId]
+    );
+    // array_cat(course_id, $1) is a PostgreSQL function that concatenates two arrays:
+    // course_id: The existing array in the course_id column.
+    // $1: The new array of course IDs being added (provided as a parameter).
+
+    res.status(200).json({ message: "Payment confirmed and courses updated successfully" });
+  } catch (err) {
+    console.error("Error confirming payment:", err);
+    res.status(500).json({ error: "Failed to confirm payment" });
+  }
+});
+
+app.get("/user-courses/:userId", async (req, res) => {
+  const { userId } = req.params;   //using params to get userId of current login user
+
+  try {
+    // Fetch the user's course IDs
+    const userResult = await db.query("SELECT course_id FROM users WHERE id = $1", [userId]);
+    const courseIds = userResult.rows[0].course_id;
+
+    if (!courseIds || courseIds.length === 0) {
+      return res.status(200).json([]); // Return an empty array if no courses are found
+    }
+
+    // Fetch the course details for the user's course IDs
+    const coursesResult = await db.query("SELECT * FROM courses WHERE id = ANY($1)", [courseIds]);
+    //id = ANY($1) is a condition that checks if the id of a course matches any value in the array provided as $1
+    console.log(coursesResult.rows);
+
+    res.status(200).json(coursesResult.rows);
+  } catch (err) {
+    console.error("Error fetching user courses:", err);
+    res.status(500).json({ error: "Failed to fetch user courses" });
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
